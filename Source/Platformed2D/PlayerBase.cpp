@@ -26,10 +26,19 @@ APlayerBase::APlayerBase()
 		SpringArm->bInheritYaw = false;
 		SpringArm->bInheritRoll = false;
 	}
-	
-	
+
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(SpringArm);
+
+	// Configure character movement
+	GetCharacterMovement()->GravityScale = 2.0f;
+	GetCharacterMovement()->AirControl = 0.80f;
+	GetCharacterMovement()->JumpZVelocity = 800.f;
+	GetCharacterMovement()->GroundFriction = 3.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 1000.0f;
+	GetCharacterMovement()->MaxFlySpeed = 600.0f;
+
+
 
 
 	/* огран по оси Y, что бы перс не выпал */
@@ -96,26 +105,23 @@ void APlayerBase::UpdateAnimation()
 
 void APlayerBase::UpdateRotation()
 {
-
-		const FVector PlayerVelocity = GetVelocity();
-		float TravelDirection = PlayerVelocity.X;
-		if (Controller != nullptr)
+	const FVector PlayerVelocity = GetVelocity();
+	float TravelDirection = PlayerVelocity.X;
+	if (Controller != nullptr)
+	{
+		if (TravelDirection < 0.0f)
 		{
-			if (TravelDirection < 0.0f)
-			{
-				Controller->SetControlRotation(FRotator(0.0, 180.0f, 0.0f));
-			}
-			else if (TravelDirection > 0.0f)
-			{
-				Controller->SetControlRotation(FRotator(0.0f, 0.0f, 0.0f));
-			}
+			Controller->SetControlRotation(FRotator(0.0, 180.0f, 0.0f));
 		}
+		else if (TravelDirection > 0.0f)
+		{
+			Controller->SetControlRotation(FRotator(0.0f, 0.0f, 0.0f));
+		}
+	}
 }
 
 
 void APlayerBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-
 }

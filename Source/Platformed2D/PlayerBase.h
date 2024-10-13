@@ -22,12 +22,7 @@ public:
 	APlayerBase();
 	virtual void Tick(float DeltaTime) override;
 
-	/*
-	================
-		MOVEMENT
-	================
-	*/
-
+	/* MOVEMENT */
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void MoveRight(float Value);
 	void Jump() override;
@@ -41,7 +36,7 @@ public:
 protected:
 	virtual void BeginPlay() override; 
 
-	/*********** PAPERS **************/
+	/* ANIMATIONS */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
 	UPaperFlipbook* IdleAnimation;
 
@@ -70,6 +65,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* ViewCamera;
 
+	/* DAMAGE SYSTEM */
 	UPROPERTY(VisibleAnywhere)
 	float Health = 0;
 	
